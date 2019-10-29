@@ -2,6 +2,8 @@ function summarizeButton() {
     // Needs API call here
     // Making it so that when the button is clicked, the summary API is called + the rest of the page will show
     document.getElementById("title").innerHTML = "Summarized Content Below:"
+    // INSERT SUMMARIZED INFO BELOW. This will pull from the summary that the summary API created, and print it in the summary id found in the html
+
     document.getElementById("approveButton").innerHTML = "<button onclick='splitToMedias()'>Approve of the Summary?</button>"
     document.getElementById("denyButton").innerHTML = "<button onclick='summarizeButton()'>Summary Denied; Try Again?</button>"
 }
