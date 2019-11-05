@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="noBoard">
+<head>
+	<title>USAA</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	
+
+	<script type="text/javascript">
+        var str = "https://www.forbes.com/sites/ewanspence/2019/10/13/microsoft-surface-duo-surface-neo-new-leak-feature-specs-patent-dual-screen-hinge/#7fe8a424462b";
+        var send = "";
+        function ParseText(url,text) {
+            var webMethod = "ServerSideUSAA.asmx/HelperAPI";
+            var parameters = "{\"url\":\"" + encodeURI(url) + "\",\"text\":\"" + encodeURI(text) + "\"}";
+			$.ajax({
+				type: "POST",
+				url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function (msg) {
+					if (msg.d) {
+                        $('#content').html(msg.d[0]);
+					}
+				},
+				error: function (e) {
+					alert("Error");
+				}
+			});
+		}
+				
+	</script>
+    <style>
+        #content{
+            background-color:white;
+        }
+        .topnav {
+            background-color: #0e2e49;
+            overflow: hidden;
+            height: 18vh;
+        }
+
+        body{
+	        xbackground-image: url("https://content.usaa.com/mcontent/static_assets/Media/prodOther_accent_brandBanner_dark_diamondBackground.svg");
+	        margin: 0;
+        }
+        .topnav a {
+            font-weight:bold;
+            font-family: Gotham,Arial,sans-serif;
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding-left: 1vw;
+            padding-right: 1vw;
+            text-decoration: none;
+            font-size: .8vw;
+            padding-top: 5vh;
+            height: 10vh;
+        }
+
+        .topnav a:hover {
+            background-color: #466c7e;
+  
+        }
+        .topnav a.active {
+	        padding-top: 12vh;
+	        height: 6vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topnav">
+        <div class="global-nav-left-container">
+            <div id="usaa-logo" class="navigation-tab usaa-logo red-stripe acc-touch-menu-wrapper">
+                <a accesskey="1" class="highlight-rec" href="https://www.usaa.com/?wa_ref=pub_auth_nav_home"> <img src="https://content.usaa.com/mcontent/static_assets/Media/enterprise_nav_globalnav_usaalogo.svg?cacheid=4189973775_p" alt="USAA Home" title=""> </a>
+            </div>
+        </div>
+        <a class="active" href="#home">PRODUCTS</a>
+        <a class="active" href="#news">ADVICE</a>
+        <a class="active" href="#contact">JOIN USAA</a>
+        <a class="active" href="#about">HELP</a>
+    </div>
+    <button onclick="ParseText(str,send)">Create Media!</button>
+    <div id="content">
+
+    </div>
+</body>
+</html>
