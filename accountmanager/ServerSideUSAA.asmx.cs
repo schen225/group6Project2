@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
-using MySql.Data;
 using System.Data;
 using RestSharp;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace accountmanager
 {
@@ -23,50 +23,67 @@ namespace accountmanager
             List<String> Responses = new List<string>();
             string APIresponse = APICall(3,url,text);
             JObject json = JObject.Parse(APIresponse);
-            string twitter = ParseTwitter(json.Last.ToString());
+            string twitter = ParseTwitter(json.GetValue("summary").ToString());
             Responses.Add(twitter);
+            System.Threading.Thread.Sleep(3000);
             APIresponse = APICall(5,url, text);
             json = JObject.Parse(APIresponse);
-            string chatbot = ParseChatbot(json.Last.ToString());
+            string chatbot = ParseChatbot(json.GetValue("summary").ToString());
             Responses.Add(chatbot);
+
+            //Sleep(3000) makes application wait 3 second to avoid a time out for API calls
+            System.Threading.Thread.Sleep(3000);
             APIresponse = APICall(4, url, text);
             json = JObject.Parse(APIresponse);
-            string facebook = ParseFacebook(json.Last.ToString());
+            string facebook = ParseFacebook(json.GetValue("summary").ToString());
             Responses.Add(facebook);
             APIresponse = APICall(3, url, text);
             json = JObject.Parse(APIresponse);
-            string abbreviated = ParseAbbreviated(json.Last.ToString());
+            string abbreviated = ParseAbbreviated(json.GetValue("summary").ToString());
             Responses.Add(abbreviated);
-
-
             return Responses;
 
         }
-        public string ParseSummary(string text)
+        [WebMethod]
+        public string hash()
         {
+            var client = new RestClient("https://api.ritekit.com/v1/stats/multiple-hashtags");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddParameter("application/x-www-form-urlencoded", "client_id=0559d8e4ffcecd87c6e9098e2cae536b896471dfbd92&post=Is%20artificial%20intelligence%20the%20future%20of%20customer%20service%3F&maxHashtags=2&hashtagPosition=auto", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            return response.Content;
 
-            char[] summary = { '"', 's', 'u', 'm', 'm', 'a', 'r', 'y', '"', ':', '"' };
-            text = text.Trim(summary);
-            return text;
         }
+        public string QuickParse(string text)
+        {
+            return text.Replace("[...]", "");
+        }
+       
+
         public string ParseTwitter(string text)
         {
-            text = ParseSummary(text);
+            string[] greetings = { "Hello, Twitter follower.","Hi,","Real talk,","Greetings,"
+            ,"What's good!"};
+            Random rnd = new Random();
+            string greeting = greetings[rnd.Next(0, greetings.Count())];
+            text = QuickParse(text);
+            text = greeting + text;
             return text;
         }
         public string ParseChatbot(string text)
         {
-            text = ParseSummary(text);
+            text = QuickParse(text);
             return text;
         }
         public string ParseFacebook(string text)
         {
-            text = ParseSummary(text);
+            text = QuickParse(text);
             return text;
         }
         public string ParseAbbreviated(string text)
         {
-            text = ParseSummary(text);
+            text = QuickParse(text);
             return text;
         }
         public string APICall(int sentenceNum, string url = "",string text = "")
@@ -78,7 +95,6 @@ namespace accountmanager
             IRestResponse response = client.Execute(request);
             return response.Content;
             
-
         }
 
 
